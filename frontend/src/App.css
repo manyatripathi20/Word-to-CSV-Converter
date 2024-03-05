@@ -1,0 +1,50 @@
+/* App.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1c1c1c; /* Dark grey background color */
+  color: #fff; /* White text color */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Changed font family */
+}
+
+.App {
+  text-align: center;
+  margin: 50px auto; /* Center the component and provide some space */
+  max-width: 600px; /* Limit the width for better readability on larger screens */
+  padding: 20px;
+  background-color: #333; /* Dark grey background color */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Add a subtle white box shadow */
+}
+
+.error {
+  color: #ff6666; /* Light red error color */
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+pre {
+  white-space: pre-wrap;
+  background-color: #2b2b2b; /* Darker grey background for code snippets */
+  color: #fff; /* White text color for code */
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+}
+
+button {
+  background-color: #4CAF50; /* Dark green success color */
+  color: #fff;
+  padding: 12px 20px; /* Increase padding for better touch interaction */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s; /* Smooth transition on hover */
+  font-weight: bold; /* Bold text */
+}
+
+button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}

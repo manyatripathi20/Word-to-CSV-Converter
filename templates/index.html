@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word to CSV Converter</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-blue-100 text-black font-sans p-8">
+
+    <h1 class="text-3xl font-bold mb-4">Word to CSV Converter</h1>
+
+    <div id="error" class="text-red-500"></div>
+
+    <form id="uploadForm" method="post" enctype="multipart/form-data" class="border-2 border-gray-300 p-4 rounded bg-white">
+        <label for="file" class="block font-bold mb-2">Drag and drop or choose a Word file:</label>
+        <input type="file" name="file" id="file" accept=".docx" required
+               class="border-2 border-dashed border-blue-500 rounded p-2 w-full cursor-pointer bg-gray-100 hover:bg-gray-200">
+        <button type="button" onclick="convertToCSV()" class="bg-green-500 text-white py-2 px-4 rounded cursor-pointer hover:bg-green-600">Convert to CSV</button>
+        <!-- Add an input field to hold the CSV data -->
+        <input type="hidden" name="csv_data" id="csvDataInput">
+    </form>
+
+    <div id="previewSection" style="display: none;">
+        <h2 class="text-2xl font-bold mt-8">Preview:</h2>
+        <pre id="previewContent" class="bg-white border-2 border-gray-300 p-4 rounded overflow-x-auto"></pre>
+        <button onclick="downloadCSV()" class="bg-green-500 text-white py-2 px-4 rounded cursor-pointer hover:bg-green-600 mt-4">Download CSV</button>
+    </div>
+
+    <script>
+        function convertToCSV() {
+    var errorDiv = document.getElementById('error');
+    var formData = new FormData(document.getElementById('uploadForm'));
+
+    fetch('http://127.0.0.1:5000/', { method: 'POST', body: formData })
+        .then(response => response.text())
+        .then(data => {
+            console.log('Server Response:', data);  // Log the server response
+            if (data.startsWith('<!DOCTYPE html>')) {
+                errorDiv.textContent = 'Error: ' + data;
+            } else {
+                document.getElementById('previewContent').textContent = data;
+                document.getElementById('previewSection').style.display = 'block';
+                document.getElementById('csvDataInput').value = data;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
+
+        function downloadCSV() {
+            var csvData = document.getElementById('previewContent').textContent;
+            var blob = new Blob([csvData], { type: 'text/csv' });
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'output.csv';
+            link.click();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var fileInput = document.getElementById('file');
+
+            fileInput.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('border-blue-500');
+            });
+
+            fileInput.addEventListener('dragleave', function() {
+                this.classList.remove('border-blue-500');
+            });
+
+            fileInput.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('border-blue-500');
+                this.files = e.dataTransfer.files;
+            });
+        });
+    </script>
+
+</body>
+</html>
